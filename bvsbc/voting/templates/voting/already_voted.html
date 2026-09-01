@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Already voted | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card center">
+    <h1>You've already voted</h1>
+    <p class="subtitle">Double voting isn't allowed &mdash; one account, one vote.</p>
+    {% if vote %}
+        <p>Your vote was recorded on {{ vote.cast_at }}.</p>
+        <p class="helptext">Receipt: <code>{{ vote.receipt_code }}</code></p>
+    {% endif %}
+    <a href="{% url 'results' %}" class="btn">See results</a>
+    <a href="{% url 'chain' %}" class="btn btn-secondary">View the blockchain</a>
+</div>
+{% endblock %}

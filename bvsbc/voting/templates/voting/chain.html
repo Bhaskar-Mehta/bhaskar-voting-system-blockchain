@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Blockchain | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Vote blockchain</h1>
+    <p class="subtitle">
+        Every cast vote is appended as a block, chained to the previous block's hash.
+        Editing any block after the fact would change its hash and break the chain from that point on &mdash;
+        which is exactly what this page checks.
+    </p>
+    <p>
+        Chain status:
+        {% if is_valid %}
+            <span class="badge badge-valid">Valid &mdash; {{ blocks|length }} block{{ blocks|length|pluralize }}, unbroken</span>
+        {% else %}
+            <span class="badge badge-invalid">Broken at block #{{ broken_index }}</span>
+        {% endif %}
+    </p>
+</div>
+
+{% for block in blocks %}
+    <div class="block-card">
+        <div class="block-index">
+            Block #{{ block.index }}
+            {% if block.data.type == "genesis" %}<span class="helptext">(genesis)</span>{% endif %}
+        </div>
+        <div>timestamp: {{ block.timestamp|date:"Y-m-d H:i:s.u" }}</div>
+        {% if block.data.type == "vote" %}
+            <div>candidate: {{ block.data.candidate }}</div>
+            <div>vote receipt: {{ block.data.vote_receipt }}</div>
+        {% else %}
+            <div>message: {{ block.data.message }}</div>
+        {% endif %}
+        <div>previous_hash: {{ block.previous_hash }}</div>
+        <div>hash: {{ block.hash }}</div>
+    </div>
+{% empty %}
+    <div class="card"><p class="helptext">No blocks yet &mdash; the genesis block is created automatically the first time someone votes.</p></div>
+{% endfor %}
+{% endblock %}

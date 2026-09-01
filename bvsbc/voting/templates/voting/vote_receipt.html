@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Vote recorded | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card center">
+    <h1>✅ Your vote is recorded</h1>
+    {% if vote %}
+        <p class="subtitle">Cast on {{ vote.cast_at }}</p>
+        <p>Here's your public receipt code. It has been added as a new block on the chain &mdash; you can look it up any time to confirm it hasn't been altered.</p>
+        <p class="otp-box"><code>{{ vote.receipt_code|slice:":16" }}&hellip;</code></p>
+        <p class="helptext">Full receipt: <code>{{ vote.receipt_code }}</code></p>
+    {% else %}
+        <p>Your vote has been recorded.</p>
+    {% endif %}
+    <a href="{% url 'chain' %}" class="btn">View it on the blockchain</a>
+    <a href="{% url 'results' %}" class="btn btn-secondary">See live results</a>
+</div>
+{% endblock %}

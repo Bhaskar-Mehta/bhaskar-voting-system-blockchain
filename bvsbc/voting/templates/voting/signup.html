@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Sign up | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 460px; margin: 0 auto;">
+    <h1>Create your account</h1>
+    <p class="subtitle">We'll send a verification code to your email before you can vote.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <p>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+                {{ field.errors }}
+            </p>
+        {% endfor %}
+        <button type="submit" class="btn">Sign up &amp; send code</button>
+    </form>
+    <p class="helptext mt">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+</div>
+{% endblock %}

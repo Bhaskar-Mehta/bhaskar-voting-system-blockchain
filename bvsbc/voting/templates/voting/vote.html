@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Cast your vote | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Cast your vote</h1>
+    <p class="subtitle">Choose one candidate. You can only vote once &mdash; there's no going back after you submit.</p>
+
+    {% if candidates %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="radio-options">
+                {% for choice in form.candidate %}
+                    <label>{{ choice.tag }} {{ choice.choice_label }}</label>
+                {% endfor %}
+            </div>
+            {{ form.candidate.errors }}
+            <button type="submit" class="btn">Submit my vote</button>
+        </form>
+    {% else %}
+        <p class="helptext">No candidates have been added yet. Ask an admin to add candidates via <code>/admin/</code> or <code>python manage.py seed_candidates</code>.</p>
+    {% endif %}
+</div>
+{% endblock %}

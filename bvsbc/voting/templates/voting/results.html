@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Results | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Live results</h1>
+    <p class="subtitle">{{ total }} vote{{ total|pluralize }} cast so far.</p>
+
+    {% if rows %}
+        {% for row in rows %}
+            <div class="mt">
+                <strong>{{ row.candidate.name }}</strong>
+                {% if row.candidate.party %}<span class="helptext">({{ row.candidate.party }})</span>{% endif %}
+                &mdash; {{ row.count }} vote{{ row.count|pluralize }} ({{ row.pct }}%)
+                <div class="bar-track"><div class="bar-fill" style="width: {{ row.pct }}%;"></div></div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="helptext">No candidates configured yet.</p>
+    {% endif %}
+</div>
+<div class="card">
+    <p>Want to verify these numbers weren't tampered with? <a href="{% url 'chain' %}">Inspect the blockchain &rarr;</a></p>
+</div>
+{% endblock %}

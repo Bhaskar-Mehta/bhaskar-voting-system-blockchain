@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Home | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Bhaskar Voting System using Block-Chain</h1>
+    <p class="subtitle">A simple, local-first voting app with email OTP verification and a hash-chained vote record.</p>
+
+    {% if user.is_authenticated %}
+        {% if has_voted %}
+            <p>You've already cast your vote. <a href="{% url 'results' %}">View live results &rarr;</a></p>
+        {% else %}
+            <a href="{% url 'vote' %}" class="btn">Cast your vote</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'signup' %}" class="btn">Sign up to vote</a>
+        <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Candidates</h2>
+    {% if candidates %}
+        <div class="grid">
+            {% for c in candidates %}
+                <div class="candidate-card">
+                    <h3>{{ c.name }}</h3>
+                    {% if c.party %}<div class="party">{{ c.party }}</div>{% endif %}
+                    {% if c.symbol %}<div class="symbol">Symbol: {{ c.symbol }}</div>{% endif %}
+                    {% if c.bio %}<p class="bio">{{ c.bio }}</p>{% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="helptext">No candidates yet. Add some from the admin panel, or run <code>python manage.py seed_candidates</code>.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>How it works</h2>
+    <ol>
+        <li>Sign up with a username, email, and password.</li>
+        <li>Verify your email with a 6-digit one-time code.</li>
+        <li>Cast exactly one vote &mdash; the system blocks a second attempt.</li>
+        <li>Your vote is appended as a new block to a local hash chain, so the record is tamper-evident.</li>
+        <li>Check the <a href="{% url 'results' %}">results</a> or explore the <a href="{% url 'chain' %}">blockchain</a> at any time.</li>
+    </ol>
+</div>
+{% endblock %}

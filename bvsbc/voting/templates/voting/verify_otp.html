@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Verify email | Bhaskar Voting System{% endblock %}
+{% block content %}
+<div class="card center" style="max-width: 420px; margin: 0 auto;">
+    <h1>Verify your email</h1>
+    <p class="subtitle">Enter the 6-digit code sent to <strong>{{ email }}</strong>.</p>
+    <p class="helptext">Using the default local setup? The code was printed to the terminal running <code>python manage.py runserver</code> instead of a real inbox.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <p>
+            {{ form.code }}
+            {{ form.code.errors }}
+        </p>
+        <button type="submit" class="btn">Verify</button>
+    </form>
+    <form method="post" action="{% url 'resend_otp' %}" class="mt">
+        {% csrf_token %}
+        <button type="submit" class="link-button" style="color: var(--accent);">Resend code</button>
+    </form>
+</div>
+{% endblock %}
